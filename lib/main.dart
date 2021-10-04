@@ -1,10 +1,13 @@
 import 'package:appfood/model/restaurante_model.dart';
-import 'package:appfood/view_model/main_view_model_imp.dart';
+import 'package:appfood/screens/restaurante_home.dart';
+import 'package:appfood/state/main_state.dart';
+import 'package:appfood/view_model/main_vm/main_view_model_imp.dart';
 import 'package:appfood/widgtes/common/common_widgets.dart';
 import 'package:auto_animated/auto_animated.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 Future<void> main() async {
@@ -16,11 +19,11 @@ Future<void> main() async {
 class MyApp extends StatelessWidget {
   final FirebaseApp app;
 
-  MyApp({this.app});
+  MyApp({required this.app});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
@@ -34,8 +37,9 @@ class MyApp extends StatelessWidget {
 class MyHomePage extends StatelessWidget {
   final FirebaseApp app;
   final viewModel = MainViewModelImp();
+  final mainStateController = Get.put(MainStateController());
 
-  MyHomePage({this.app});
+  MyHomePage({required this.app});
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +71,11 @@ class MyHomePage extends StatelessWidget {
                 scrollDirection: Axis.vertical,
                 itemCount: lst.length,
                 itemBuilder: animationItemBuilder((index) => InkWell(
-                      onTap: () {},
+                      onTap: () {
+                        mainStateController.selectedRestaurante.value =
+                            lst[index];
+                        Get.to(() => RestauranteHome());
+                      },
                       child: Container(
                         width: double.infinity,
                         height: MediaQuery.of(context).size.height / 2.5 * 1.1,

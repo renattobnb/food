@@ -1,4 +1,5 @@
 class RestauranteModel {
+  String restauranteId = '';
   String endereco = '';
   String nome = '';
   String imageUrl = '';
@@ -6,7 +7,7 @@ class RestauranteModel {
   String phone = '';
 
   RestauranteModel(
-      {this.endereco, this.nome, this.imageUrl, this.paymentUrl, this.phone});
+      {required this.endereco, required this.nome, required this.imageUrl, required this.paymentUrl, required this.phone});
 
   RestauranteModel.fromJson(Map<String, dynamic> json) {
      endereco = json['endereco'];
