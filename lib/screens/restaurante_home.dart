@@ -1,7 +1,7 @@
-import 'package:appfood/model/popular_item_model.dart';
 import 'package:appfood/state/main_state.dart';
 import 'package:appfood/view_model/restaurante_home_vm/restaurante_home_vm.dart';
 import 'package:appfood/view_model/restaurante_home_vm/restaurate_home_vm_imp.dart';
+import 'package:appfood/widgtes/restaurante_home_widget/mostrarListaMaisPopulares.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -15,7 +15,14 @@ class RestauranteHome extends StatelessWidget {
     return SafeArea(
         child: Scaffold(
       appBar: AppBar(
-        title: Text('${mainStateController.selectedRestaurante.value.nome}'),
+        title: Text('${mainStateController.selectedRestaurante.value.nome}', 
+        style: GoogleFonts.jetBrainsMono(color: Colors.black,fontWeight: FontWeight.w900),),
+        backgroundColor: Colors.white,
+        foregroundColor: Colors.black,
+        elevation: 10,
+        iconTheme: IconThemeData(
+          color: Colors.black
+        ),
       ),
       body: Container(
         padding: const EdgeInsets.all(8),
@@ -23,33 +30,7 @@ class RestauranteHome extends StatelessWidget {
           children: [
             Expanded(
               flex: 1,
-              child: Container(
-                child: FutureBuilder(
-                  future: viewModel.displayMostPopularByRestauranteId(
-                      mainStateController
-                          .selectedRestaurante.value.restauranteId),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting)
-                      return Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    else {
-                      var lstPopular = snapshot.data as List<PopularItemModel>;
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('Mais Popular...', style: GoogleFonts.jetBrainsMono(
-                            fontWeight: FontWeight.w900,
-                            fontSize: 24,
-                            color: Colors.black45),
-                            ),
-                            Text('Populares...: ${lstPopular.length}')
-                        ],
-                      );
-                    }
-                  },
-                ),
-              ),
+              child: MostrarMaisPularesWidget(viewModel: viewModel, mainStateController: mainStateController),
             ),
             Expanded(
               flex: 2,
@@ -63,3 +44,4 @@ class RestauranteHome extends StatelessWidget {
     ));
   }
 }
+
