@@ -4,10 +4,10 @@ class PopularItemModel {
   PopularItemModel({required this.food_id, required this.nome, required this.imagem, required this.menu_id});
 
    PopularItemModel.fromJson(Map<String, dynamic> json) {
-     food_id = json['food_id'];
-       nome = json['nome'];
-     imagem = json['imagem']; 
-     menu_id = json['menu_id'];
+     food_id = json['food_id'] == null ? '' : json['food_id'];
+     nome    = json['nome'] == null ? '' : json['nome'];
+     imagem  = json['imagem']  == null ? '' : json['imagem']; 
+     menu_id = json['menu_id'] == null ? '' : json['menu_id'];
   }
 
   Map<String, dynamic> toJson() {
