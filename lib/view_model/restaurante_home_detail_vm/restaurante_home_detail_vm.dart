@@ -1,6 +1,6 @@
 import 'package:appfood/model/popular_item_model.dart';
 
-abstract class RestauranteHomeViewModel {
+abstract class RestauranteHomeDetailViewModel {
   Future<List<PopularItemModel>> displayMostPopularByRestauranteId(
       String restauranteId);
   Future<List<PopularItemModel>> displayBestDealsByRestauranteId(
