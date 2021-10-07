@@ -65,14 +65,14 @@ class MyHomePage extends StatelessWidget {
             return Container(
               margin: const EdgeInsets.only(top: 10),
               child: LiveList(
-                showItemDuration: Duration(milliseconds: 350),
-                showItemInterval: Duration(milliseconds: 150),
+                showItemDuration: Duration(milliseconds: 100),
+                showItemInterval: Duration(milliseconds: 100),
                 reAnimateOnVisibility: true,
                 scrollDirection: Axis.vertical,
                 itemCount: lst.length,
                 itemBuilder: animationItemBuilder((index) => InkWell(
                       onTap: () {
-                        mainStateController.selectedRestaurante.value =
+                        mainStateController.restauranteSelecionado.value =
                             lst[index];
                         Get.to(() => RestauranteHome());
                       },

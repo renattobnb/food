@@ -1,11 +1,15 @@
-import 'package:appfood/const/const.dart';
+import 'package:appfood/view_model/menu_vm/menu_vw_imp.dart';
+import 'package:appfood/widgtes/menu_home_widget/menu_categoria_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import 'package:appfood/const/const.dart';
+
 class MenuScreen extends StatelessWidget {
   final ZoomDrawerController zoomDrawerController;
+  final viewModel = MenuViewModelImp();
 
   MenuScreen(this.zoomDrawerController);
 
@@ -66,32 +70,13 @@ class MenuScreen extends StatelessWidget {
                 ),
               ),
             ),
-            Divider( thickness: 1,),
-
-             InkWell(
-              onTap: (){},
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Icon(
-                      Icons.list,
-                      color: Colors.white,
-                    ),
-                    SizedBox(
-                      width: 30,
-                    ),
-                    Text(
-                      'Categorias',
-                      style: GoogleFonts.jetBrainsMono(
-                          fontSize: 18,
-                          color: Colors.white,
-                          fontWeight: FontWeight.w900),
-                    ),
-                  ],
-                ),
-              ),
+            Divider(
+              thickness: 1,
+            ),
+            MenuCategoriaWidget(
+              icon: Icons.list,
+              nomeMenu: 'Categoria',
+              callback: viewModel.navigateCategorias,
             ),
           ],
         ),

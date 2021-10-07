@@ -21,7 +21,7 @@ class MostrarMaisPularesWidget extends StatelessWidget {
     return Container(
       child: FutureBuilder(
         future: viewModel.displayMostPopularByRestauranteId(
-            mainStateController.selectedRestaurante.value.restauranteId),
+            mainStateController.restauranteSelecionado.value.restauranteId),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting)
             return Center(
@@ -41,8 +41,8 @@ class MostrarMaisPularesWidget extends StatelessWidget {
                 ),
                 Expanded(
                   child: LiveList(
-                    showItemDuration: Duration(milliseconds: 350),
-                    showItemInterval: Duration(milliseconds: 150),
+                    showItemDuration: Duration(milliseconds: 100),
+                    showItemInterval: Duration(milliseconds: 100),
                     reAnimateOnVisibility: true,
                     scrollDirection: Axis.horizontal,
                     itemCount: lstPopular.length,

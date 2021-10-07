@@ -26,7 +26,7 @@ class RestauranteHomeDetail extends StatelessWidget {
         child: Scaffold(
       appBar: AppBar(
         title: Text(
-          '${mainStateController.selectedRestaurante.value.nome}',
+          '${mainStateController.restauranteSelecionado.value.nome}',
           style: GoogleFonts.jetBrainsMono(
               color: Colors.black, fontWeight: FontWeight.w900),
         ),
@@ -53,7 +53,7 @@ class RestauranteHomeDetail extends StatelessWidget {
                 child: FutureBuilder(
                   future: viewModel.displayBestDealsByRestauranteId(
                       mainStateController
-                          .selectedRestaurante.value.restauranteId),
+                          .restauranteSelecionado.value.restauranteId),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting)
                       return Center(
