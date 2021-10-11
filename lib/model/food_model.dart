@@ -1,5 +1,4 @@
 import 'package:appfood/model/size_model.dart';
-
 import 'add_model.dart';
 
 class FoodModel {
@@ -8,7 +7,7 @@ class FoodModel {
   String nome = '';
   String imagem = '';
   double preco = 0;
-  List<SizeModel> size = List<SizeModel>.empty(growable: true);
+  List<TamanhoModel> tamanho = List<TamanhoModel>.empty(growable: true);
   List<AddonModel> addon = List<AddonModel>.empty(growable: true);
 
   FoodModel(
@@ -18,7 +17,7 @@ class FoodModel {
       required this.imagem,
       required this.preco,
       required this.nome,
-      required this.size});
+      required this.tamanho});
 
   FoodModel.fromJson(Map<String, dynamic> json) {
     nome = json['nome'];
@@ -34,9 +33,9 @@ class FoodModel {
     }
 
     if (json['tamanho'] != null) {
-      final size = List<SizeModel>.empty(growable: true);
+      final size = List<TamanhoModel>.empty(growable: true);
       json['tamanho'].forEach((v) {
-        size.add(SizeModel.fromJson(v));
+        size.add(TamanhoModel.fromJson(v));
       });
     }
   }
@@ -49,7 +48,7 @@ class FoodModel {
     data['id'] = this.id;
     data['descricao'] = this.descricao;
     data['imagem'] = this.imagem;
-    data['tamanho'] = this.size.map((e) => e.toJson()).toList();
+    data['tamanho'] = this.tamanho.map((e) => e.toJson()).toList();
     data['addon'] = this.addon.map((e) => e.toJson()).toList();
 
     return data;

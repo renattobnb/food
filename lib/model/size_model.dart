@@ -1,10 +1,10 @@
-class SizeModel{
+class TamanhoModel{
   String nome = '';
   double preco = 0;
 
-  SizeModel({required this.nome, required this.preco});
+  TamanhoModel({required this.nome, required this.preco});
 
-  SizeModel.fromJson(Map<String, dynamic> json) {
+  TamanhoModel.fromJson(Map<String, dynamic> json) {
     nome = json['nome'] == null ? '' : json['nome'];
     preco = double.parse(json['preco'].toString());
   }

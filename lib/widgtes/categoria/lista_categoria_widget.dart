@@ -1,15 +1,19 @@
 import 'package:appfood/const/const.dart';
 import 'package:appfood/model/categoria_model.dart';
+import 'package:appfood/screens/food_lista.dart';
+import 'package:appfood/state/categoria_state.dart';
 import 'package:appfood/widgtes/common/common_widgets.dart';
 import 'package:auto_animated/auto_animated.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ListaCategoriaWidget extends StatelessWidget {
   final List<CategoriaModel> lst;
 
-  const ListaCategoriaWidget(this.lst);
+  const ListaCategoriaWidget(this.lst, this.categoriaStateController);
+  final CategoriaStateController categoriaStateController;
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +29,11 @@ class ListaCategoriaWidget extends StatelessWidget {
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2, crossAxisSpacing: 1, mainAxisSpacing: 1),
           itemBuilder: animationItemBuilder((index) => InkWell(
-                onTap: () {},
+                onTap: () {
+                  categoriaStateController.categoriaSelecionada.value =
+                      lst[index];
+                  Get.to(() => FoodListaScreen());
+                },
                 child: Card(
                   semanticContainer: true,
                   clipBehavior: Clip.antiAliasWithSaveLayer,
