@@ -1,5 +1,7 @@
 import 'package:appfood/const/const.dart';
+import 'package:appfood/screens/food_detail.dart';
 import 'package:appfood/state/categoria_state.dart';
+import 'package:appfood/state/food_lista_state.dart';
 import 'package:appfood/widgtes/common/common_widgets.dart';
 import 'package:auto_animated/auto_animated.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -10,6 +12,8 @@ import 'package:google_fonts/google_fonts.dart';
 class FoodListaScreen extends StatelessWidget {
   //final viewModel = CategoriaViewModelImp();
   final CategoriaStateController categoriaStateController = Get.find();
+  final FoodListaController foodListaController =
+      Get.put(FoodListaController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,9 +38,14 @@ class FoodListaScreen extends StatelessWidget {
             itemCount: categoriaStateController
                 .categoriaSelecionada.value.foods.length,
             itemBuilder: animationItemBuilder((index) => InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    foodListaController.foodSelecionado.value =
+                        categoriaStateController
+                            .categoriaSelecionada.value.foods[index];
+                    Get.to(() => FoodDetailScreen());
+                  },
                   child: SizedBox(
-                    height: MediaQuery.of(context).size.height/6*2,
+                    height: MediaQuery.of(context).size.height / 6 * 2,
                     child: Card(
                       semanticContainer: true,
                       clipBehavior: Clip.antiAliasWithSaveLayer,
@@ -45,10 +54,7 @@ class FoodListaScreen extends StatelessWidget {
                         children: [
                           CachedNetworkImage(
                             imageUrl: categoriaStateController
-                                .categoriaSelecionada
-                                .value
-                                .foods[index]
-                                .imagem,
+                                .categoriaSelecionada.value.foods[index].imagem,
                             fit: BoxFit.cover,
                             errorWidget: (context, url, err) => Center(
                               child: Icon(Icons.image),
@@ -80,18 +86,16 @@ class FoodListaScreen extends StatelessWidget {
                                             Text(
                                               '${categoriaStateController.categoriaSelecionada.value.foods[index].nome}',
                                               textAlign: TextAlign.center,
-                                              style:
-                                                  GoogleFonts.jetBrainsMono(
-                                                      color: Colors.white,
-                                                      fontSize: 18),
+                                              style: GoogleFonts.jetBrainsMono(
+                                                  color: Colors.white,
+                                                  fontSize: 18),
                                             ),
                                             Text(
                                               'Preço: \R${categoriaStateController.categoriaSelecionada.value.foods[index].preco}',
                                               textAlign: TextAlign.center,
-                                              style:
-                                                  GoogleFonts.jetBrainsMono(
-                                                      color: Colors.white,
-                                                      fontSize: 18),
+                                              style: GoogleFonts.jetBrainsMono(
+                                                  color: Colors.white,
+                                                  fontSize: 18),
                                             ),
                                             Row(
                                               children: [
@@ -130,4 +134,3 @@ class FoodListaScreen extends StatelessWidget {
     );
   }
 }
-
