@@ -1,4 +1,4 @@
-import 'package:appfood/model/size_model.dart';
+import 'package:appfood/model/tamanho_model.dart';
 import 'add_model.dart';
 
 class FoodModel {
@@ -25,17 +25,18 @@ class FoodModel {
     imagem = json['imagem'];
     descricao = json['descricao'];
     preco = double.parse(json['preco'].toString());
+   
     if (json['addon'] != null) {
-      final adicionar = List<AddonModel>.empty(growable: true);
+      final addon = List<AddonModel>.empty(growable: true);
       json['addon'].forEach((v) {
-        adicionar.add(AddonModel.fromJson(v));
+        addon.add(AddonModel.fromJson(v));
       });
     }
 
     if (json['tamanho'] != null) {
-      final size = List<TamanhoModel>.empty(growable: true);
-      json['tamanho'].forEach((v) {
-        size.add(TamanhoModel.fromJson(v));
+      final tamanho = List<TamanhoModel>.empty(growable: true);
+      json['tamanho'].forEach((t) {
+        tamanho.add(TamanhoModel.fromJson(t));
       });
     }
   }

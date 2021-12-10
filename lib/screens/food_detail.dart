@@ -1,67 +1,71 @@
 import 'package:appfood/state/categoria_state.dart';
+import 'package:appfood/state/food_detail_state.dart';
 import 'package:appfood/state/food_lista_state.dart';
 import 'package:appfood/utils/utils.dart';
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:appfood/widgtes/food_detail/food_detail_add_widget.dart';
+import 'package:appfood/widgtes/food_detail/food_detail_descricao_widget.dart';
+import 'package:appfood/widgtes/food_detail/food_detail_imagem_widget.dart';
+import 'package:appfood/widgtes/food_detail/food_detail_nome_widget.dart';
+import 'package:appfood/widgtes/food_detail/food_detail_tamanho_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class FoodDetailScreen extends StatelessWidget {
   final CategoriaStateController categoriaStateController = Get.find();
-  final FoodListaController foodListaController = Get.find();
+  final FoodListaStateController foodListaStateController = Get.find();
+  final FoodDetailStateController foodDetailStateController =
+        Get.put(FoodDetailStateController());
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(
-          title: Text(
-            '${categoriaStateController.categoriaSelecionada.value.nome}',
-            style: GoogleFonts.jetBrainsMono(color: Colors.black),
-          ),
-          elevation: 10,
-          backgroundColor: Colors.white,
-          foregroundColor: Colors.black,
-          iconTheme: IconThemeData(color: Colors.black),
-        ),
         body: NestedScrollView(
-            headerSliverBuilder: (context, innerBoxIsScrolled) {
-              return [
-                SliverAppBar(
-                  title:
-                      Text('${foodListaController.foodSelecionado.value.nome}',
-                      style: GoogleFonts.jetBrainsMono(color:Colors.black),),
-                      elevation: 10,
-                      backgroundColor: Colors.white,
-                      iconTheme: IconThemeData(color: Colors.black),
-                      foregroundColor: Colors.black,
-                      bottom: PreferredSize(
-                        preferredSize: Size.square(foodDetailImagemAreaSize(context)),
-                        child: Column(children: [
-                          Container(width: double.infinity,
-                          height: foodDetailImagemAreaSize(context)*0.9,
-                          child:  CachedNetworkImage(
-                            imageUrl: categoriaStateController
-                                .categoriaSelecionada.value.imagem,
-                            fit: BoxFit.cover,
-                            errorWidget: (context, url, err) => Center(
-                              child: Icon(Icons.image),
-                            ),
-                            progressIndicatorBuilder:
-                                (context, url, donwloadProgress) => Center(
-                              child: CircularProgressIndicator(),
-                            ),
-                          ),)
-                        ],),
-                      ),
-
-                )
-              ];
-            },
-            body: Container(
-                child: Center(
-              child: Text('Food Detail'),
-            ))),
+          headerSliverBuilder: (context, innerBoxIsScrolled) {
+            return [
+              SliverAppBar(
+                title: Text(
+                  '${foodListaStateController.foodSelecionado.value.nome}',
+                  style: GoogleFonts.jetBrainsMono(color: Colors.black),
+                ),
+                elevation: 10,
+                backgroundColor: Colors.white,
+                iconTheme: IconThemeData(color: Colors.black),
+                foregroundColor: Colors.black,
+                bottom: PreferredSize(
+                  preferredSize: Size.square(foodDetailImagemAreaSize(context)),
+                  child: FoodDetailImagemWidget(
+                    foodListaStateController: foodListaStateController,
+                  ),
+                ),
+              )
+            ];
+          },
+          body: SingleChildScrollView(
+            child: Container(
+              margin: const EdgeInsets.only(top: 10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  FoodDetailNomeWidget(
+                      foodListaStateController: foodListaStateController,
+                      foodDetailStateController: foodDetailStateController),
+                  FoodDetailDescricaoWidget(
+                      foodListaStateController: foodListaStateController),
+                  FoodDetailTamanhoWidget(
+                      foodDetailStateController: foodDetailStateController,
+                      foodListaStateController: foodListaStateController),
+                  FoodDetailAdd(
+                    foodDetailStateController: foodDetailStateController,
+                    foodListaStateController: foodListaStateController,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
       ),
     );
   }

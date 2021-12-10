@@ -1,7 +1,9 @@
 import 'package:appfood/model/food_model.dart';
 import 'package:get/get.dart';
 
-class FoodListaController extends GetxController {
+
+
+class FoodListaStateController extends GetxController {
   var foodSelecionado = FoodModel(
     descricao: 'descricao',
     id: 'id',
@@ -9,7 +11,6 @@ class FoodListaController extends GetxController {
     imagem: 'imagem',
     preco: 0,
     tamanho: [],
-    addon: []
-  ).obs;
+    addon: []).obs;
   
 }

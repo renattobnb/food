@@ -6,7 +6,10 @@ import 'package:firebase_database/firebase_database.dart';
 
 Future<List<RestauranteModel>> getRestauranteList() async {
   var list = List<RestauranteModel>.empty(growable: true);
-  var source = await FirebaseDatabase.instance.reference().child(RESTAURANTE_REF).once();
+  var source = await FirebaseDatabase.instance
+  .reference()
+  .child(RESTAURANTE_REF)
+  .once();
   Map<dynamic, dynamic> values = source.value;
   RestauranteModel? restauranteModel;
   values.forEach((key, value) {

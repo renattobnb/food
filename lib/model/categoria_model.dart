@@ -23,7 +23,6 @@ class CategoriaModel {
 
   Map<String, dynamic> toJson() {
       final data = Map<String, dynamic>();
-
       data['nome'] = this.nome;
       data['imagem'] = this.imagem;
       data['foods'] = this.foods.map((v) => v.toJson()).toList();
