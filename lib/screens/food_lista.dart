@@ -1,5 +1,6 @@
 import 'package:appfood/const/const.dart';
 import 'package:appfood/screens/food_detail.dart';
+import 'package:appfood/state/cart_state.dart';
 import 'package:appfood/state/categoria_state.dart';
 import 'package:appfood/state/food_lista_state.dart';
 import 'package:appfood/widgtes/common/appbar_cart_button.dart';
@@ -15,22 +16,25 @@ class FoodListaScreen extends StatelessWidget {
   final CategoriaStateController categoriaStateController = Get.find();
   final FoodListaStateController foodListaStateController =
         Get.put(FoodListaStateController());
+  final CartStateController cartStateController = Get.find();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBarCartButton(titulo:  '${categoriaStateController.categoriaSelecionada.value.nome}',),
+      appBar: AppBarCartButton(
+        titulo: '${categoriaStateController.categoriaSelecionada.value.nome}',
+      ),
       body: Column(
         children: [
           Expanded(
-              child: LiveList(
-            showItemInterval: Duration(milliseconds: 100),
-            showItemDuration: Duration(milliseconds: 100),
-            reAnimateOnVisibility: true,
-            scrollDirection: Axis.vertical,
-            itemCount: categoriaStateController
-                .categoriaSelecionada.value.foods.length,
-            itemBuilder: animationItemBuilder((index) => 
-           InkWell(
+            child: LiveList(
+                showItemInterval: Duration(milliseconds: 100),
+                showItemDuration: Duration(milliseconds: 100),
+                reAnimateOnVisibility: true,
+                scrollDirection: Axis.vertical,
+                itemCount: categoriaStateController
+                    .categoriaSelecionada.value.foods.length,
+                itemBuilder: animationItemBuilder(
+                  (index) => InkWell(
                     onTap: () {
                       foodListaStateController.foodSelecionado.value =
                           categoriaStateController
@@ -47,7 +51,10 @@ class FoodListaScreen extends StatelessWidget {
                           children: [
                             CachedNetworkImage(
                               imageUrl: categoriaStateController
-                                  .categoriaSelecionada.value.foods[index].imagem,
+                                  .categoriaSelecionada
+                                  .value
+                                  .foods[index]
+                                  .imagem,
                               fit: BoxFit.cover,
                               errorWidget: (context, url, err) => Center(
                                 child: Icon(Icons.image),
@@ -79,30 +86,32 @@ class FoodListaScreen extends StatelessWidget {
                                               Text(
                                                 '${categoriaStateController.categoriaSelecionada.value.foods[index].nome}',
                                                 textAlign: TextAlign.center,
-                                                style: GoogleFonts.jetBrainsMono(
-                                                    color: Colors.white,
-                                                    fontSize: 18),
+                                                style:
+                                                    GoogleFonts.jetBrainsMono(
+                                                        color: Colors.white,
+                                                        fontSize: 18),
                                               ),
                                               Text(
                                                 'Preço: \R${categoriaStateController.categoriaSelecionada.value.foods[index].preco}',
                                                 textAlign: TextAlign.center,
-                                                style: GoogleFonts.jetBrainsMono(
-                                                    color: Colors.white,
-                                                    fontSize: 18),
+                                                style:
+                                                    GoogleFonts.jetBrainsMono(
+                                                        color: Colors.white,
+                                                        fontSize: 18),
                                               ),
                                               Row(
                                                 children: [
                                                   IconButton(
                                                       icon: Icon(
-                                                        Icons.favorite_border,
+                                                        Icons.add_shopping_cart,
                                                         color: Colors.white,
                                                       ),
-                                                      onPressed: () {}),
+                                                      onPressed: () => cartStateController.addToCart(categoriaStateController.categoriaSelecionada.value.foods[index])),
                                                   SizedBox(
                                                     width: 50,
                                                   ),
                                                   Icon(
-                                                    Icons.add_shopping_cart,
+                                                    Icons.favorite_border,
                                                     color: Colors.white,
                                                   )
                                                 ],
@@ -121,7 +130,7 @@ class FoodListaScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-            )),
+                )),
           )
         ],
       ),

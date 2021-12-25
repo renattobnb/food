@@ -1,3 +1,4 @@
+import 'package:appfood/state/cart_state.dart';
 import 'package:appfood/state/categoria_state.dart';
 import 'package:appfood/state/food_detail_state.dart';
 import 'package:appfood/state/food_lista_state.dart';
@@ -15,7 +16,8 @@ class FoodDetailScreen extends StatelessWidget {
   final CategoriaStateController categoriaStateController = Get.find();
   final FoodListaStateController foodListaStateController = Get.find();
   final FoodDetailStateController foodDetailStateController =
-        Get.put(FoodDetailStateController());
+      Get.put(FoodDetailStateController());
+  
 
   @override
   Widget build(BuildContext context) {

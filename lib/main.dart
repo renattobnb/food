@@ -1,5 +1,9 @@
+import 'dart:convert';
+
+import 'package:appfood/model/cart_model.dart';
 import 'package:appfood/model/restaurante_model.dart';
 import 'package:appfood/screens/restaurante_home.dart';
+import 'package:appfood/state/cart_state.dart';
 import 'package:appfood/state/main_state.dart';
 import 'package:appfood/view_model/main_vm/main_view_model_imp.dart';
 import 'package:appfood/widgtes/common/common_widgets.dart';
@@ -8,18 +12,49 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   FirebaseApp app = await Firebase.initializeApp();
+  await GetStorage.init();
   runApp(MyApp(app: app));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   final FirebaseApp app;
+  final viewModel = MainViewModelImp();
+  final mainStateController = Get.put(MainStateController());
+  final box = GetStorage();
+  final cartStateController = Get.put(CartStateController());
 
   MyApp({required this.app});
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
+  
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance!.addPostFrameCallback((_) async {
+      if (widget.box.hasData('CART_STORAGE')) {
+        var salvarCart = await widget.box.read('CART_STORAGE') as String;
+        if (salvarCart.length > 0 && salvarCart.isNotEmpty) {
+          final listCart = jsonDecode(salvarCart) as List<dynamic>;
+          final listCartParsed = listCart.map((e) => CartModel.fromJson(e)).toList();
+          if (listCartParsed.length > 0) {
+            widget.cartStateController.cart.value = listCartParsed;
+          }
+        }
+      } else {
+        widget.cartStateController.cart.value =
+            new List<CartModel>.empty(growable: true);
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +64,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(app: app),
+      home: MyHomePage(app: widget.app),
     );
   }
 }
