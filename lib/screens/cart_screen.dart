@@ -1,8 +1,11 @@
 import 'package:appfood/state/cart_state.dart';
+import 'package:appfood/view_model/cart_vm/cart_view_model_imp.dart';
 import 'package:appfood/widgtes/cart/cart_image_widget.dart';
 import 'package:appfood/widgtes/cart/cart_info_widget.dart';
+import 'package:appfood/widgtes/cart/cart_total_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_elegant_number_button/flutter_elegant_number_button.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -10,6 +13,7 @@ import 'package:get_storage/get_storage.dart';
 class CartListaScreen extends StatelessWidget {
   final box = GetStorage();
   final CartStateController controller = Get.find();
+  final CartViewModelImp cartViewModelImp = CartViewModelImp();
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +55,23 @@ class CartListaScreen extends StatelessWidget {
                                             flex: 6,
                                             child: CartInfo(
                                               cartModel: controller.cart[index],
-                                            ))
+                                            )),
+                                        Center(
+                                          child: ElegantNumberButton(
+                                              initialValue: controller
+                                                  .cart[index].quantidade,
+                                              minValue: 1,
+                                              maxValue: 100,
+                                              color: Colors.amber,
+                                              onChanged: (value) {
+                                                // atualiza a quantidade
+                                                cartViewModelImp.atualizarCart(
+                                                    controller,
+                                                    index,
+                                                    value.toInt());
+                                              },
+                                              decimalPlaces: 0),
+                                        ),
                                       ],
                                     ),
                                   ),
@@ -66,7 +86,10 @@ class CartListaScreen extends StatelessWidget {
                                     onTap: () {},
                                   )
                                 ],
-                              )))
+                              ))),
+                              CartTotalWidget(controller: controller),
+                              
+                              
                 ],
               ))
           : Center(
@@ -74,4 +97,5 @@ class CartListaScreen extends StatelessWidget {
             ),
     );
   }
+
 }

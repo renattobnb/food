@@ -56,4 +56,6 @@ class CartStateController extends GetxController {
   }
 
   getEntregaFree() => sumCart() * 0.1; // 10% de desconto
+
+  getSubTotal() => sumCart() + getEntregaFree();
 }
