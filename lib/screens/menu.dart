@@ -70,6 +70,14 @@ class MenuScreen extends StatelessWidget {
                 ),
               ),
             ),
+             Divider(
+              thickness: 1,
+            ),
+            MenuCategoriaWidget(
+              icon: Icons.restaurant_menu_outlined,
+              nomeMenu: 'Restaurantes',
+              callback: viewModel.backToRestaurantesList,
+            ),
             Divider(
               thickness: 1,
             ),

@@ -35,27 +35,31 @@ class CartStateController extends GetxController {
     }
   }
 
-  bool isExists(CartModel cartItem) {
-    return cart.contains(cartItem);
-  }
+  isExists(CartModel cartItem) => cart.any((e)=> e.id == cartItem.id);
+  
 
-  sumCart() {
-    return cart.length == 0
-        ? 0
-        : cart
-            .map((e) => e.preco * e.quantidade)
-            .reduce((value, element) => value + element);
-  }
+  sumCart() => cart.length == 0
+      ? 0
+      : cart
+          .map((e) => e.preco * e.quantidade)
+          .reduce((value, element) => value + element);
 
-  int getQuantidade() {
-    return cart.length == 0
-        ? 0
-        : cart
-            .map((e) => e.quantidade)
-            .reduce((value, element) => value + element);
-  }
+  getQuantidade() => cart.length == 0
+      ? 0
+      : cart
+          .map((e) => e.quantidade)
+          .reduce((value, element) => value + element);
 
   getEntregaFree() => sumCart() * 0.1; // 10% de desconto
 
   getSubTotal() => sumCart() + getEntregaFree();
+
+  clearCart() {
+    cart.clear();
+    salvarDatabase();
+  }
+
+ // deleteCart() => box.remove('CART_STORAGE');
+
+  salvarDatabase() => box.write('CART_STORAGE', jsonEncode(cart));
 }

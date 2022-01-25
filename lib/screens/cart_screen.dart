@@ -22,7 +22,15 @@ class CartListaScreen extends StatelessWidget {
         title: Text('Carrinho'),
         actions: [
           controller.getQuantidade() > 0
-              ? IconButton(onPressed: () {}, icon: Icon(Icons.clear))
+              ? IconButton(onPressed: ()=>  Get.defaultDialog(
+                                        title: 'Deseja realmente limpar?',
+                                        middleText: 'Limpar',
+                                        textCancel: 'Cancelar',
+                                        textConfirm: 'Confirmar',
+                                        confirmTextColor: Colors.yellow,
+
+                                       onConfirm: ()=> cartViewModelImp.clearCart(controller)),
+                                       icon: Icon(Icons.clear))
               : Container()
         ],
       ),
@@ -83,12 +91,22 @@ class CartListaScreen extends StatelessWidget {
                                     caption: 'Excluir',
                                     icon: Icons.delete,
                                     color: Colors.red,
-                                    onTap: () {},
+                                    onTap: (){
+                                      Get.defaultDialog(
+                                        title: 'Deseja realmente deletar o item?',
+                                        middleText: 'Deletar',
+                                        textCancel: 'Cancelar',
+                                        textConfirm: 'Confirmar',
+                                        confirmTextColor: Colors.yellow,
+
+                                        onConfirm: ()=> cartViewModelImp.deleteCart(controller, index),
+                                      );
+                                    },
                                   )
                                 ],
                               ))),
                               CartTotalWidget(controller: controller),
-                              
+
                               
                 ],
               ))

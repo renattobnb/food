@@ -6,10 +6,10 @@ import 'package:appfood/widgtes/categoria/lista_categoria_widget.dart';
 import 'package:appfood/widgtes/common/appbar_cart_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class CategoriaScreen extends StatelessWidget {
  
+  
   final viewModel = CategoriaViewModelImp();
   final MainStateController mainStateController = Get.find();
   final CategoriaStateController categoriaStateController =
@@ -18,7 +18,10 @@ class CategoriaScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBarCartButton(titulo: 'Categoria'),
+      appBar: AppBarCartButton(
+        titulo:
+            '${mainStateController.restauranteSelecionado.value.nome}',
+      ),
       body: FutureBuilder(
         future: viewModel.displayCategoriaByRestauranteId(
             mainStateController.restauranteSelecionado.value.restauranteId),
@@ -31,9 +34,7 @@ class CategoriaScreen extends StatelessWidget {
             var lst = snapshot.data as List<CategoriaModel>;
             return Container(
               margin: const EdgeInsets.only(top: 10),
-              child: ListaCategoriaWidget(
-                lst,categoriaStateController
-              ),
+              child: ListaCategoriaWidget(lst, categoriaStateController),
             );
           }
         },
