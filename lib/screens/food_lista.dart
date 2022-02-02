@@ -3,6 +3,7 @@ import 'package:appfood/screens/food_detail.dart';
 import 'package:appfood/state/cart_state.dart';
 import 'package:appfood/state/categoria_state.dart';
 import 'package:appfood/state/food_lista_state.dart';
+import 'package:appfood/state/main_state.dart';
 import 'package:appfood/widgtes/common/appbar_cart_button.dart';
 import 'package:appfood/widgtes/common/common_widgets.dart';
 import 'package:auto_animated/auto_animated.dart';
@@ -14,8 +15,9 @@ import 'package:google_fonts/google_fonts.dart';
 class FoodListaScreen extends StatelessWidget {
   //final viewModel = CategoriaViewModelImp();
   final CategoriaStateController categoriaStateController = Get.find();
+  final MainStateController mainStateController = Get.find();
   final FoodListaStateController foodListaStateController =
-        Get.put(FoodListaStateController());
+      Get.put(FoodListaStateController());
   final CartStateController cartStateController = Get.find();
   @override
   Widget build(BuildContext context) {
@@ -106,7 +108,12 @@ class FoodListaScreen extends StatelessWidget {
                                                         Icons.add_shopping_cart,
                                                         color: Colors.white,
                                                       ),
-                                                      onPressed: () => cartStateController.addToCart(categoriaStateController.categoriaSelecionada.value.foods[index])),
+                                                      onPressed: () =>
+                                                          cartStateController.addToCart(
+                                                              categoriaStateController
+                                                                  .categoriaSelecionada
+                                                                  .value
+                                                                  .foods[index], mainStateController.restauranteSelecionado.value.restauranteId)),
                                                   SizedBox(
                                                     width: 50,
                                                   ),

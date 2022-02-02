@@ -1,4 +1,5 @@
 import 'package:appfood/state/cart_state.dart';
+import 'package:appfood/state/main_state.dart';
 import 'package:appfood/view_model/cart_vm/cart_view_model_imp.dart';
 import 'package:appfood/widgtes/cart/cart_image_widget.dart';
 import 'package:appfood/widgtes/cart/cart_info_widget.dart';
@@ -14,6 +15,7 @@ class CartListaScreen extends StatelessWidget {
   final box = GetStorage();
   final CartStateController controller = Get.find();
   final CartViewModelImp cartViewModelImp = CartViewModelImp();
+  final MainStateController mainStateController = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -21,20 +23,20 @@ class CartListaScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text('Carrinho'),
         actions: [
-          controller.getQuantidade() > 0
-              ? IconButton(onPressed: ()=>  Get.defaultDialog(
-                                        title: 'Deseja realmente limpar?',
-                                        middleText: 'Limpar',
-                                        textCancel: 'Cancelar',
-                                        textConfirm: 'Confirmar',
-                                        confirmTextColor: Colors.yellow,
-
-                                       onConfirm: ()=> cartViewModelImp.clearCart(controller)),
-                                       icon: Icon(Icons.clear))
+          controller.getQuantidade(mainStateController.restauranteSelecionado.value.restauranteId) > 0
+              ? IconButton(
+                  onPressed: () => Get.defaultDialog(
+                      title: 'Deseja realmente limpar?',
+                      middleText: 'Limpar',
+                      textCancel: 'Cancelar',
+                      textConfirm: 'Confirmar',
+                      confirmTextColor: Colors.yellow,
+                      onConfirm: () => cartViewModelImp.clearCart(controller)),
+                  icon: Icon(Icons.clear))
               : Container()
         ],
       ),
-      body: controller.getQuantidade() > 0
+      body: controller.getQuantidade(mainStateController.restauranteSelecionado.value.restauranteId) > 0
           ? Obx(() => Column(
                 children: [
                   Expanded(
@@ -91,23 +93,22 @@ class CartListaScreen extends StatelessWidget {
                                     caption: 'Excluir',
                                     icon: Icons.delete,
                                     color: Colors.red,
-                                    onTap: (){
+                                    onTap: () {
                                       Get.defaultDialog(
-                                        title: 'Deseja realmente deletar o item?',
+                                        title:
+                                            'Deseja realmente deletar o item?',
                                         middleText: 'Deletar',
                                         textCancel: 'Cancelar',
                                         textConfirm: 'Confirmar',
                                         confirmTextColor: Colors.yellow,
-
-                                        onConfirm: ()=> cartViewModelImp.deleteCart(controller, index),
+                                        onConfirm: () => cartViewModelImp
+                                            .deleteCart(controller, index),
                                       );
                                     },
                                   )
                                 ],
                               ))),
-                              CartTotalWidget(controller: controller),
-
-                              
+                  CartTotalWidget(controller: controller),
                 ],
               ))
           : Center(
@@ -115,5 +116,4 @@ class CartListaScreen extends StatelessWidget {
             ),
     );
   }
-
 }

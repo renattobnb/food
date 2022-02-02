@@ -8,7 +8,10 @@ class CartStateController extends GetxController {
   var cart = List<CartModel>.empty(growable: true).obs;
   final box = GetStorage();
 
-  addToCart(FoodModel foodModel, {int quantidade: 1}) async {
+  getCart(String restauranteId) =>
+      cart.where((item) => item.restauranteId == restauranteId);
+
+  addToCart(FoodModel foodModel, String restauranteId, {int quantidade: 1}) async {
     try {
       var cartItem = CartModel(
           id: foodModel.id,
@@ -18,8 +21,9 @@ class CartStateController extends GetxController {
           preco: foodModel.preco,
           addon: foodModel.addon,
           tamanho: foodModel.tamanho,
-          quantidade: 1);
-      if (isExists(cartItem)) {
+          quantidade: quantidade,
+          restauranteId: restauranteId);
+      if (isExists(cartItem, restauranteId)) {
         var foodAtualiza =
             cart.firstWhere((element) => element.id == cartItem.id);
         foodAtualiza.quantidade += quantidade;
@@ -35,31 +39,30 @@ class CartStateController extends GetxController {
     }
   }
 
-  isExists(CartModel cartItem) => cart.any((e)=> e.id == cartItem.id);
-  
+  isExists(CartModel cartItem, String restauranteId) => cart.any((e) => e.id == cartItem.id && e.restauranteId == restauranteId);
 
-  sumCart() => cart.length == 0
+  sumCart(String restauranteId) => getCart(restauranteId).length == 0
       ? 0
-      : cart
+      : getCart(restauranteId)
           .map((e) => e.preco * e.quantidade)
           .reduce((value, element) => value + element);
 
-  getQuantidade() => cart.length == 0
+  getQuantidade(String restauranteId) => getCart(restauranteId).length == 0
       ? 0
-      : cart
+      : getCart(restauranteId)
           .map((e) => e.quantidade)
           .reduce((value, element) => value + element);
 
-  getEntregaFree() => sumCart() * 0.1; // 10% de desconto
+  getEntregaFree(String restauranteId) => sumCart(restauranteId) * 0.1; // 10% de desconto
 
-  getSubTotal() => sumCart() + getEntregaFree();
+  getSubTotal(String restauranteId) => sumCart(restauranteId) + getEntregaFree(restauranteId);
 
-  clearCart() {
-    cart.clear();
+  clearCart(String restauranteId) {
+    getCart(restauranteId).clear();
     salvarDatabase();
   }
 
- // deleteCart() => box.remove('CART_STORAGE');
+  // deleteCart() => box.remove('CART_STORAGE');
 
   salvarDatabase() => box.write('CART_STORAGE', jsonEncode(cart));
 }

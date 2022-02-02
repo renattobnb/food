@@ -1,5 +1,6 @@
 import 'package:appfood/screens/cart_screen.dart';
 import 'package:appfood/state/cart_state.dart';
+import 'package:appfood/state/main_state.dart';
 import 'package:badges/badges.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +10,8 @@ import 'package:google_fonts/google_fonts.dart';
 class AppBarCartButton extends StatelessWidget implements PreferredSizeWidget {
   final String titulo;
   final CartStateController cartStateController = Get.find();
+  final MainStateController mainStateController = Get.find();
+
   AppBarCartButton({required this.titulo});
 
   @override
@@ -23,18 +26,19 @@ class AppBarCartButton extends StatelessWidget implements PreferredSizeWidget {
       foregroundColor: Colors.black,
       iconTheme: IconThemeData(color: Colors.black),
       actions: [
-        Obx(()=> Badge(
+        Obx(
+          () => Badge(
             position: BadgePosition(top: 0, end: 1),
             animationDuration: Duration(milliseconds: 200),
             animationType: BadgeAnimationType.scale,
             showBadge: true,
             badgeColor: Colors.red,
             badgeContent: Text(
-              '${cartStateController.getQuantidade()}',
+              '${cartStateController.getQuantidade(mainStateController.restauranteSelecionado.value.restauranteId)}',
               style: GoogleFonts.jetBrainsMono(color: Colors.white),
             ),
             child: IconButton(
-              onPressed: () => Get.to(()=>CartListaScreen()),
+              onPressed: () => Get.to(() => CartListaScreen()),
               icon: Icon(Icons.shopping_bag),
             ),
           ),
